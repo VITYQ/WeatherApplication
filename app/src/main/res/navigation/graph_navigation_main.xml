@@ -6,6 +6,7 @@
     app:startDestination="@id/welcomeFragment">
 
     <fragment
+        app:defaultNavHost="true"
         android:id="@+id/welcomeFragment"
         android:name="com.example.weatherapplication.presentation.welcome.WelcomeFragment"
         android:label="fragment_welcome"
@@ -18,6 +19,7 @@
             app:destination="@id/signupFragment" />
     </fragment>
     <fragment
+        app:defaultNavHost="true"
         android:id="@+id/loginFragment"
         android:name="com.example.weatherapplication.presentation.login.LoginFragment"
         android:label="fragment_login"
@@ -27,16 +29,52 @@
             app:destination="@id/signupFragment" />
         <action
             android:id="@+id/action_loginFragment_to_weatherListFragment"
-            app:destination="@id/weatherListFragment" />
+            app:destination="@id/nav_weather" />
     </fragment>
     <fragment
+        app:defaultNavHost="true"
         android:id="@+id/signupFragment"
         android:name="com.example.weatherapplication.presentation.register.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" />
     <fragment
-        android:id="@+id/weatherListFragment"
+        app:defaultNavHost="true"
+        android:id="@+id/nav_weather"
         android:name="com.example.weatherapplication.presentation.weather.WeatherListFragment"
         android:label="fragment_weather_list"
-        tools:layout="@layout/fragment_weather_list" />
+        tools:layout="@layout/fragment_weather_list" >
+        <action
+            android:id="@+id/action_nav_weather_to_detailsWeatherFragment"
+            app:destination="@id/detailsWeatherFragment" />
+    </fragment>
+    <fragment
+        app:defaultNavHost="true"
+        android:id="@+id/nav_search"
+        android:name="com.example.weatherapplication.presentation.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_nav_search_to_detailsWeatherFragment"
+            app:destination="@id/detailsWeatherFragment" />
+    </fragment>
+    <fragment
+        app:defaultNavHost="true"
+        android:id="@+id/nav_settings"
+        android:name="com.example.weatherapplication.presentation.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_nav_settings_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+    </fragment>
+    <fragment
+        app:defaultNavHost="true"
+        android:id="@+id/detailsWeatherFragment"
+        android:name="com.example.weatherapplication.presentation.detailsweather.DetailsWeatherFragment"
+        android:label="DetailsWeatherFragment">
+        <argument
+            android:name="cityid"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>

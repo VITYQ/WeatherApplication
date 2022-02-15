@@ -1,0 +1,40 @@
+package com.example.weatherapplication.presentation.settings
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import com.example.weatherapplication.R
+import com.example.weatherapplication.databinding.FragmentSettingsBinding
+
+
+class SettingsFragment : Fragment() {
+
+    lateinit var binding: FragmentSettingsBinding
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.buttonSignout.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_settings_to_welcomeFragment)
+        }
+    }
+
+
+}

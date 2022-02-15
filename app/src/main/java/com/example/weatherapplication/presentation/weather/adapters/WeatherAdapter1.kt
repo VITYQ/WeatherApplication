@@ -17,13 +17,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import android.util.DisplayMetrics
+import androidx.navigation.findNavController
 import com.example.weatherapplication.R
 import com.example.weatherapplication.model.data.Weather1
+import android.os.Bundle
 
 
-class WeatherAdapter1(val context: Context, var list: List<Weather1>): RecyclerView.Adapter<WeatherAdapter1.WeatherItemViewHolder>() {
 
-    private var lastPosition = -1
+
+
+class WeatherAdapter1(val context: Context, val list: List<Weather1>): RecyclerView.Adapter<WeatherAdapter1.WeatherItemViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherItemViewHolder {
         return WeatherItemViewHolder(
@@ -35,27 +39,14 @@ class WeatherAdapter1(val context: Context, var list: List<Weather1>): RecyclerV
 
     override fun onBindViewHolder(holder: WeatherItemViewHolder, position: Int) {
         holder.bind(list[position])
-        setAnimation(holder.itemView, position)
     }
 
 
-    fun setAnimation(viewToAnimate: View, position: Int) {
-        // If the bound view wasn't previously displayed on screen, it's animated
-        if (position > lastPosition) {
-            val animation: Animation =
-                AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
-            viewToAnimate.startAnimation(animation)
-            lastPosition = position
-        }
-    }
+
 
     class WeatherItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val expandedView = itemView.findViewById<ConstraintLayout>(R.id.constraint_expanded)
-        val field1 = itemView.findViewById<TextView>(R.id.tv_field1)
-        val field11 = itemView.findViewById<TextView>(R.id.tv_field11)
-        val field2 = itemView.findViewById<TextView>(R.id.tv_field2)
-        val list = listOf<View>(field1, field11, field2)
+
 
         fun bind(item: Weather1) = with(itemView) {
 
@@ -63,16 +54,13 @@ class WeatherAdapter1(val context: Context, var list: List<Weather1>): RecyclerV
             val weather = itemView.findViewById<TextView>(R.id.textView_weather)
             val temp = itemView.findViewById<TextView>(R.id.tv_temperature)
             val card = itemView.findViewById<CardView>(R.id.cardview_weather)
-            val expandedView = itemView.findViewById<ConstraintLayout>(R.id.constraint_expanded)
 
             card.setOnClickListener {
-                CoroutineScope(Dispatchers.Main).launch {
-                    if (expandedView.visibility == View.VISIBLE) { hide() }
-                    else { expand() }
-                }
-
-
+                val bundle = Bundle()
+                bundle.putInt("cityid", item.id)
+                findNavController().navigate(R.id.action_nav_weather_to_detailsWeatherFragment, bundle)
             }
+
 
             city.text = item.city
             weather.text = item.weather
@@ -91,31 +79,9 @@ class WeatherAdapter1(val context: Context, var list: List<Weather1>): RecyclerV
                 card.setCardBackgroundColor(Color.parseColor("#F55044"))
             }
         }
-        suspend fun expand() {
-            expandedView.visibility = View.VISIBLE
-            list.forEach {
-                it.alpha = 0f
-            }
-            list.forEach {
-                delay(300)
-                val x = it.x
-                it.x = x-100
-                it.animate()
-                    .alpha(1f)
-                    .x(x)
-                    .setDuration(1000)
-                    .setInterpolator(FastOutSlowInInterpolator())
-                    .start()
-            }
-        }
 
-        suspend fun hide() {
-            expandedView.visibility = View.GONE
-        }
 
-        fun convertDpToPixel(dp: Float, context: Context): Float {
-            return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-        }
+
     }
 
 

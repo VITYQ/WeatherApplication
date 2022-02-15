@@ -13,6 +13,7 @@ object RetrofitInstance {
                 .baseUrl("https://api.openweathermap.org/")
                 .addConverterFactory(ScalarsConverterFactory.create()) // позволяет принимать response body в виде String
                 .addConverterFactory(GsonConverterFactory.create())
+
                 .build()
         }
         return retrofit!!

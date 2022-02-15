@@ -2,7 +2,9 @@ package com.example.weatherapplication.model.remote
 
 import android.util.Log
 import com.example.weatherapplication.WeatherApi
+import com.example.weatherapplication.model.data.Weather
 import com.example.weatherapplication.model.data.Weather1
+import com.example.weatherapplication.model.data.WeatherResponse
 import com.example.weatherapplication.model.retrofit.RetrofitInstance
 
 class WeatherRepository {
@@ -26,6 +28,11 @@ class WeatherRepository {
         val temp = response.main?.temp?.toInt()?.minus(273)
         val weather = response.weather?.get(0)?.main
         val city = response.name
-        return Weather1(city!!, weather!!, temp!!)
+        val id = response.id
+        return Weather1(city!!, weather!!, temp!!, id!!)
+    }
+
+    suspend fun fetchWeatherDetails(id: Int) : WeatherResponse {
+        return api.getWeather(id, "e9fa256df6ebb4101bec1ec7eaa465f2")
     }
 }
