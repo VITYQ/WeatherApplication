@@ -7,47 +7,123 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.detailsweather.DetailsWeatherFragment">
+        android:orientation="vertical">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:id="@+id/tv_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:text="@string/hello_blank_fragment"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:background="@color/design_default_color_primary"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Sample city"
+            app:titleTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_weather"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cloudy"
-            android:layout_marginTop="4dp"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/tv_city"
-            app:layout_constraintStart_toStartOf="@+id/tv_city"
-            app:layout_constraintTop_toBottomOf="@+id/tv_city" />
+        <androidx.core.widget.NestedScrollView
+            android:background="#eee"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".presentation.detailsweather.DetailsWeatherFragment">
 
 
-        <TextView
-            android:id="@+id/tv_temperature"
-            android:textSize="16sp"
-            android:text="16C"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@+id/tv_weather"
-            app:layout_constraintStart_toStartOf="@+id/tv_weather"
-            app:layout_constraintTop_toBottomOf="@+id/tv_weather" />
+                <TextView
+                    android:id="@+id/tv_datetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:text="21 февраля, 5:26"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-<!--        < android:id="@+id/" />-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tv_tempmaxmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Макс. 8℃ | Мин. -1℃"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintStart_toStartOf="@+id/tv_datetime"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_datetime" />
+
+
+
+                <!-- TODO: Update blank fragment layout -->
+
+
+                <TextView
+                    android:id="@+id/tv_weather"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Облачно с прояснениями"
+
+                    android:layout_marginTop="4dp"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/iv_weather"
+                    app:layout_constraintStart_toStartOf="@id/iv_weather"
+                    app:layout_constraintEnd_toEndOf="@id/iv_weather"/>
+
+
+                <TextView
+                    android:id="@+id/tv_temperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="42"
+                    android:textSize="91sp"
+                    app:layout_constraintStart_toStartOf="@+id/tv_tempmaxmin"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_datetime" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="℃"
+                    android:textSize="36sp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_temperature"
+                    app:layout_constraintTop_toTopOf="@+id/tv_temperature" />
+
+                <TextView
+                    android:id="@+id/tv_feelslike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ощущается как 34℃"
+                    app:layout_constraintStart_toStartOf="@+id/tv_temperature"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_temperature" />
+
+
+                <ImageView
+                    android:id="@+id/iv_weather"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="36dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_temperature"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_temperature" />
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+
+
 </layout>

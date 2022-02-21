@@ -21,9 +21,7 @@ import androidx.navigation.findNavController
 import com.example.weatherapplication.R
 import com.example.weatherapplication.model.data.Weather1
 import android.os.Bundle
-
-
-
+import android.widget.ImageView
 
 
 class WeatherAdapter1(val context: Context, val list: List<Weather1>): RecyclerView.Adapter<WeatherAdapter1.WeatherItemViewHolder>() {
@@ -54,6 +52,17 @@ class WeatherAdapter1(val context: Context, val list: List<Weather1>): RecyclerV
             val weather = itemView.findViewById<TextView>(R.id.textView_weather)
             val temp = itemView.findViewById<TextView>(R.id.tv_temperature)
             val card = itemView.findViewById<CardView>(R.id.cardview_weather)
+            val image = itemView.findViewById<ImageView>(R.id.imageView_weather)
+
+
+            when (item.weather) {
+                "Clear" -> image.setImageDrawable(resources.getDrawable(R.drawable.ic_sunny))
+                "Clouds" -> image.setImageDrawable(resources.getDrawable(R.drawable.ic_partlycloudy))
+                "Snow" -> image.setImageDrawable(resources.getDrawable(R.drawable.ic_snowy))
+                "Rain" -> image.setImageDrawable(resources.getDrawable(R.drawable.ic_rainy))
+                "Drizzle" -> image.setImageDrawable(resources.getDrawable(R.drawable.ic_rainy))
+                "Thunderstorm" -> image.setImageDrawable(resources.getDrawable(R.drawable.ic_rainthunder))
+            }
 
             card.setOnClickListener {
                 val bundle = Bundle()
@@ -64,7 +73,7 @@ class WeatherAdapter1(val context: Context, val list: List<Weather1>): RecyclerV
 
             city.text = item.city
             weather.text = item.weather
-            temp.text = "${item.temp}C*"
+            temp.text = "${item.temp}℃"
 
             if (item.temp < -10) {
                 card.setCardBackgroundColor(Color.parseColor("#5D54CD"))
