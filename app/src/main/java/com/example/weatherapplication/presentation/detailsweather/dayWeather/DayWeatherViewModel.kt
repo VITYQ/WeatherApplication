@@ -36,21 +36,17 @@ class DayWeatherViewModel() : ViewModel() {
                     hourlyWeather.add(hourlyWeatherRaw!![i])
                 }
                 hourlyWeatherLiveData.value = hourlyWeather
-                Log.d("checkhourlyweather", hourlyWeatherLiveData.value.toString())
             }
             else {
                 val tomorrowWeather = WeatherRepository().getDailyWeather(lat!!, lon!!)
-                Log.d("checkdailyweather", tomorrowWeather.toString())
+
                 with (tomorrowWeather.daily!![1]) {
-                    val main = Main(temp!!.day, feels_like!!.day, temp!!.min, temp!!.max, 0, 0)
-                    val weather = WeatherResponse(null, weather, null, main, null,
-                        null, null, null, null, null, null,
-                        currentWeather.name, null
+                    val main = Main(temp!!.day, feels_like!!.day, temp!!.min, temp!!.max, 0  , 0)
+                    val weather = WeatherResponse(weather = weather, main = main,
+                        name = currentWeather.name
                     )
                     tomorrowWeatherLiveData.value = weather
                 }
-
-
 
                 val countOfElements = 24 - LocalTime.now().hour
                 val hourlyWeatherRaw = WeatherRepository().getHourlyWeather(lat!!, lon!!).hourly
@@ -59,8 +55,6 @@ class DayWeatherViewModel() : ViewModel() {
                     hourlyWeather.add(hourlyWeatherRaw!![i])
                 }
                 tomorrowHourlyWeatherLiveData.value = hourlyWeather
-
-
             }
 
 
