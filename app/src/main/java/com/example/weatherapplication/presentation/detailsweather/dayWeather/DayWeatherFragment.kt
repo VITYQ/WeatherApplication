@@ -70,16 +70,11 @@ class DayWeatherFragment(val cityId: Int, val today: Boolean) : Fragment() {
             }
         }
 
-
-
-
     }
 
     fun setRecycler(it: List<Hourly>){
         val adapter = HourlyWeatherRecyclerAdapter(requireContext(), it)
         binding.rvWeatherHourly.adapter = adapter
-        Log.d("checkrecycler", today.toString())
-        Log.d("checkrecycler", it.toString())
     }
 
     fun setView(it: WeatherResponse) {
