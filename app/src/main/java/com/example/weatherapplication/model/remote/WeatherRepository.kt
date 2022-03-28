@@ -2,6 +2,7 @@ package com.example.weatherapplication.model.remote
 
 import android.util.Log
 import com.example.weatherapplication.WeatherApi
+import com.example.weatherapplication.model.data.OnecallApiResponse
 import com.example.weatherapplication.model.data.Weather
 import com.example.weatherapplication.model.data.Weather1
 import com.example.weatherapplication.model.data.WeatherResponse
@@ -34,5 +35,13 @@ class WeatherRepository {
 
     suspend fun fetchWeatherDetails(id: Int) : WeatherResponse {
         return api.getWeather(id, "e9fa256df6ebb4101bec1ec7eaa465f2")
+    }
+
+    suspend fun getHourlyWeather(lat: Float, lon: Float) : OnecallApiResponse {
+        return api.getHourlyWeather(lat, lon, "e9fa256df6ebb4101bec1ec7eaa465f2")
+    }
+
+    suspend fun getDailyWeather(lat: Float, lon: Float) : OnecallApiResponse {
+        return api.getDailyWeather(lat, lon, "e9fa256df6ebb4101bec1ec7eaa465f2")
     }
 }

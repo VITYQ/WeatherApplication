@@ -21,7 +21,7 @@ class WeatherListViewModel : ViewModel() {
     }
 
     fun fetchWeather() {
-        val listOfCities = listOf<Int>(498817, 7264, 2807300)
+        val listOfCities = listOf<Int>(498817, 7264, 2807300, 498817, 498817)
 
         CoroutineScope(Dispatchers.Main).launch {
             weatherList.value = repository.fetchWeatherCities(listOfCities)

@@ -44,8 +44,6 @@ class WeatherAdapter1(val context: Context, val list: List<Weather1>): RecyclerV
 
     class WeatherItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-
-
         fun bind(item: Weather1) = with(itemView) {
 
             val city = itemView.findViewById<TextView>(R.id.textView_city)
