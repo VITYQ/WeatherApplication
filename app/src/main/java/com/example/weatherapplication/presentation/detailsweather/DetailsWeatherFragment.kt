@@ -16,6 +16,9 @@ import com.example.weatherapplication.presentation.detailsweather.adapters.DaysV
 import com.example.weatherapplication.presentation.detailsweather.adapters.HourlyWeatherRecyclerAdapter
 import com.example.weatherapplication.presentation.weather.WeatherListViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -27,6 +30,7 @@ class DetailsWeatherFragment() : Fragment() {
 
     lateinit var binding: FragmentDetailsWeatherBinding
     lateinit var viewModel: DetailsWeatherViewModel
+    var cityId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +50,12 @@ class DetailsWeatherFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.vpDays.adapter = DaysViewPagerAdapter(this, arguments?.getInt("cityid")!!)
+        cityId = arguments?.getInt("cityid")!!
+        binding.vpDays.adapter = DaysViewPagerAdapter(this, cityId)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.checkIfInFavourites(cityId)
+        }
+        viewModel.getCityName(cityId)
 
         TabLayoutMediator(binding.tlDays, binding.vpDays) {tab, position ->
             when (position) {
@@ -61,6 +69,27 @@ class DetailsWeatherFragment() : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_favourite -> {
+                    viewModel.addOrRemoveFromFavourites(cityId)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        viewModel.cityName.observe(viewLifecycleOwner){
+            binding.toolbar.title = it
+        }
+
+        viewModel.isFavourite.observe(viewLifecycleOwner){
+            Log.d("checkfafaf", it.toString())
+            if (it)
+                binding.toolbar.menu.findItem(R.id.menu_favourite).icon = resources.getDrawable(R.drawable.ic_baseline_star_24)
+            else
+                binding.toolbar.menu.findItem(R.id.menu_favourite).icon = resources.getDrawable(R.drawable.ic_baseline_star_outline_24)
+        }
 
 
 

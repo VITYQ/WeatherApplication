@@ -12,6 +12,7 @@ class DaysViewPagerAdapter(fragment: Fragment, val cityId: Int) : FragmentStateA
         when (position) {
             0 -> return DayWeatherFragment(cityId, true)
             1 -> return DayWeatherFragment(cityId, false)
+
             else -> return DayWeatherFragment(cityId, true)
         }
     }

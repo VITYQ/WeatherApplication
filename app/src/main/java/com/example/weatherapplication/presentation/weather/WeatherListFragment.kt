@@ -22,6 +22,11 @@ class WeatherListFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchWeather()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +44,9 @@ class WeatherListFragment : Fragment() {
 
 
         viewModel.weatherList.observe(viewLifecycleOwner) {
+            if(!it.isNullOrEmpty()) binding.tvNoFavs.visibility = View.GONE
+            else binding.tvNoFavs.visibility = View.VISIBLE
+
             val weatherAdapter = WeatherAdapter1(requireContext(), it)
             binding.rvWeather.adapter = weatherAdapter
         }

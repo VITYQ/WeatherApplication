@@ -1,39 +1,73 @@
 package com.example.weatherapplication.presentation.detailsweather
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.room.Room
 import com.example.weatherapplication.model.data.Hourly
 import com.example.weatherapplication.model.data.WeatherResponse
 import com.example.weatherapplication.model.remote.WeatherRepository
+import com.example.weatherapplication.model.room.AppDatabase
+import com.example.weatherapplication.model.room.CityDB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 
-class DetailsWeatherViewModel: ViewModel() {
+class DetailsWeatherViewModel(application: Application): AndroidViewModel(application) {
 
-    val weatherLiveData = MutableLiveData<WeatherResponse>()
+    val isFavourite = MutableLiveData(false)
+    val cityName = MutableLiveData<String>()
 
-    val hourlyWeatherLiveData = MutableLiveData<List<Hourly>>()
+    val context = getApplication<Application>().applicationContext
 
-    fun fetchWeather(id: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            weatherLiveData.value = WeatherRepository().fetchWeatherDetails(id)
+    suspend fun checkIfInFavourites(id: Int): Boolean{
+        var favourite = false
+        val db = Room.databaseBuilder(
+            context,
+            AppDatabase::class.java, "city-db"
+        ).build()
+        val cityDao = db.cityDao()
 
-            val lat = weatherLiveData.value!!.coord!!.lat
-            val lon = weatherLiveData.value!!.coord!!.lon
-
-            val countOfElements = 24 - LocalTime.now().hour
-
-            val hourlyWeatherRaw = WeatherRepository().getHourlyWeather(lat!!, lon!!).hourly
-            val hourlyWeather = mutableListOf<Hourly>()
-            for (i in 1..countOfElements) {
-                hourlyWeather.add(hourlyWeatherRaw!![i])
-            }
-            hourlyWeatherLiveData.value = hourlyWeather
-            Log.d("checkhourlyweather", hourlyWeatherLiveData.value.toString())
-
+        if(cityDao.findById(id) != null) {
+            isFavourite.postValue(true)
+            favourite = true
         }
+        else {
+            isFavourite.postValue(false)
+        }
+        return favourite
     }
+
+
+    fun addOrRemoveFromFavourites(id: Int){
+        val db = Room.databaseBuilder(
+            context,
+            AppDatabase::class.java, "city-db"
+        ).build()
+        val cityDao = db.cityDao()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            if (checkIfInFavourites(id)){
+                cityDao.delete(CityDB(id, ""))
+            }
+            else {
+                cityDao.insertCity(CityDB(id, ""))
+            }
+            checkIfInFavourites(id)
+        }
+
+
+    }
+
+    fun getCityName(cityId: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            cityName.postValue(WeatherRepository().fetchWeatherAtCity(cityId).city)
+        }
+
+    }
+
+
 }

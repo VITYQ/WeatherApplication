@@ -16,6 +16,9 @@ import com.example.weatherapplication.model.data.Hourly
 import com.example.weatherapplication.model.data.WeatherResponse
 import com.example.weatherapplication.presentation.detailsweather.DetailsWeatherViewModel
 import com.example.weatherapplication.presentation.detailsweather.adapters.HourlyWeatherRecyclerAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -44,6 +47,9 @@ class DayWeatherFragment(val cityId: Int, val today: Boolean) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetchWeather(cityId, today)
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.checkIfInFavourites(cityId)
+        }
 
 
 
@@ -68,6 +74,20 @@ class DayWeatherFragment(val cityId: Int, val today: Boolean) : Fragment() {
             viewModel.tomorrowHourlyWeatherLiveData.observe(viewLifecycleOwner) {
                 setRecycler(it)
             }
+        }
+
+        viewModel.isFavourite.observe(viewLifecycleOwner) {
+            if (it)
+                binding.ivFavourite.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_star_24))
+
+            else{
+                binding.ivFavourite.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_star_outline_24))
+            }
+
+        }
+
+        binding.ivFavourite.setOnClickListener {
+            viewModel.addOrRemoveFromFavourites(cityId)
         }
 
     }

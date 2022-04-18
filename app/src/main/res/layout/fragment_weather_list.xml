@@ -12,8 +12,29 @@
         android:layout_height="match_parent"
         tools:context=".presentation.weather.WeatherListFragment">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_main"
+            android:background="@color/design_default_color_primary"
+            app:title="Избранное"
+            app:menu="@menu/menu_example"
+
+            app:titleTextColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
+
+        <TextView
+            android:id="@+id/tv_no_favs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="У Вас еще нет избранных"
+            android:textSize="20sp"
+            android:visibility="visible"
+            android:layout_gravity="center"/>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_weather"
+            android:layout_marginTop="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
